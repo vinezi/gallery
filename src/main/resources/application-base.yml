@@ -1,5 +1,7 @@
 server:
-  port: 8085
+  port: 8080
+  servlet:
+    context-path: /api/gallery
 spring:
   application:
     name: gallery-art
@@ -24,3 +26,9 @@ security:
 springdoc:
   swagger-ui:
     doc-expansion: none
+s3:
+  url: ${MINIO_HOST_NAME:http://185.174.137.251:9000}
+  accessKey: ${MINIO_USER:rootroot}
+  secretKey: ${MINIO_PASSWORD:toortoor}
+custom:
+  pathSave: /tmp/
