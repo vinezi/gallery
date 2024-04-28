@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres
+#    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: gallery
+      TZ: UTC
+#  bt:
+#    image: 'gallery'
+#    container_name: gallery
+#    restart: always
+#    environment:
+#      POSTGRES_HOST_NAME: db
+#      MAIL_LINK: http://112759.vm.spacecore.network:8080
+#      MINIO_HOST_NAME: minio
+#    ports:
+#      - 8080:8080
+  minio:
+    image: docker.io/bitnami/minio:2022
+    container_name: minio
+#    restart: always
+    environment:
+      MINIO_ROOT_USER: rootroot
+      MINIO_ROOT_PASSWORD: toortoor
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio_data:/data'
+    cpus: 0.5
+    mem_limit: 512m
+volumes:
+  minio_data:
+    driver: local
+networks:
+  default:
+    name: gallery-art
