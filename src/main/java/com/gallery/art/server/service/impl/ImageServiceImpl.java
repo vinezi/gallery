@@ -7,6 +7,7 @@ import com.amazonaws.util.IOUtils;
 import com.gallery.art.server.db.entity.ImageEntity;
 import com.gallery.art.server.dto.Image;
 import com.gallery.art.server.exeption.ObjectNotExistsException;
+import com.gallery.art.server.mapper.ImageMapper;
 import com.gallery.art.server.repository.ImageRepository;
 import com.gallery.art.server.service.IImageService;
 import com.google.common.io.Files;
@@ -34,6 +35,7 @@ public class ImageServiceImpl implements IImageService {
     private String path;
     private final AmazonS3 s3;
     private final ImageRepository imageRepository;
+    private final ImageMapper imageMapper;
 
     @Override
     public ResponseEntity<byte[]> loadFile(String bucketName, String fileName) throws IOException {
@@ -70,7 +72,13 @@ public class ImageServiceImpl implements IImageService {
         if (!s3.doesObjectExist(bucketName, name))
             throw new IllegalStateException("Изображение не сохранилось!");
 
-        return null; //todo v
+        return imageMapper.toDto(imageRepository.save(
+                ImageEntity.builder()
+                        .previewFilename(fullName)
+                        .fullFilename(fullName)
+                        .fileExtension(FilenameUtils.getExtension(originalfile.getOriginalFilename()))
+                        .build()
+        ));
     }
 
     @Override
