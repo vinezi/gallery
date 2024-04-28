@@ -35,7 +35,7 @@ public class ImageServiceImpl implements IImageService {
     private String path;
     private final AmazonS3 s3;
     private final ImageRepository imageRepository;
-    private final ImageMapper imageMapper;
+    private final ImageMapper imageMapper; //todo v
 
     @Override
     public ResponseEntity<byte[]> loadFile(String bucketName, String fileName) throws IOException {
