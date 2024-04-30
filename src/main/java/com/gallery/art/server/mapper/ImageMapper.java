@@ -7,6 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface ImageMapper {
 
-
     Image toDto(ImageEntity src);
 }
