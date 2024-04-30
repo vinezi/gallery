@@ -21,6 +21,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final JwtFilter jwtFilter;
+
     private final String[] swaggerPaths = {
             "/v3/api-docs/**",
             "/configuration/ui",
@@ -60,8 +62,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().disable()
 
-                .addFilterBefore(filter, CsrfFilter.class);
-//                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(filter, CsrfFilter.class)
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
