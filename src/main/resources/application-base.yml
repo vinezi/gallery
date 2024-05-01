@@ -17,6 +17,18 @@ spring:
     properties:
       hibernate:
         format_sql: false
+  mail:
+    host: smtp.gmail.com
+    link: ${MAIL_LINK:http://localhost:8080}
+    port: 587
+    username: owldiplomproject@gmail.com #todo
+    password: ifcqvtplnrkzkbik
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 security:
   private-key:
     access: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCykSV2dq8jaujAAmmUUoTwSjfIP7d7rM5msN4ZT3mdp0zSWp9JokNtVISupkTo9GNqB7nzvNtRA5AqpLYo6/e7ggLdpEV89xDrSTpGxzDwm8Y7Qq5pS4ZliLbMUTOYRSN6FAnC5iKF/sSUPgVO3EyRRaza5TKU1sh4Y7lleyTzmnlBtZpT+LRtB5wJP4SZdRSqfZe8HBBz8FCeNyOKDa0jGIf5TUjjQt2m2/HirDiKtTc7EQeuU0YQuUdgjDvg5bc34GkWByT7O+efD7V4HYowAmflUr8Xg5sm/SitstJkgoLPKJuv3Z/tA0Gqsyy6YODIu+t7/YCY7H+uR6uIlA5LAgMBAAECggEAXNA0uK5XugEHmUWnuwBpOLxa4iq8I/xeC+JCjsVQYTFkLLINuSguA9W6YUzq5GqigaoibR3soN9JP+D9DagYy813z9xigeGpWaJmOAOw3F8bWhH+tZwb7wpweSJ7vtmw5vMjX7pel2ckpijWeXboFVoxzlTzRYmeCXVMGAM54aO58UW+4WPy4KbIXTIxiAK3tPN+9SRPk0UTW2xuYmPGkLBcSGkfETz4Q2hN3DwL5rU3XyKz7BB/XeN+fsqRcd0rL4k1OMYw94ZEPIFehF/mIWYdAa3eE0RWVXq6xGymqKbMdRlsDYzUzt+0964DxySnB7RLUD5xrjUjxSFqJFTfAQKBgQDo0JSFXubLNcBDAHFD1e/sFmYwXJKNbeIypIB+4AIYLo0v3LyIgCbRLrqhfZCN//RCJQa0QV4d6Tne4oDy6IQ2xqeeACSS2KBEM6fRf8VJhrPWXguNrv3VGfS2BVHjiNhy36TiI4VuYinlDasAdgBqAFy+nxB3klcAZ968Uwaq+QKBgQDEWZBOgCvaB9RyYEOe9WO7lF4ywvRfnWhe51FS6DH+IqqCnLSHMXp9QWosKtXdBh2uG/oR5toi4Cvdl9QXVg/CAAn7h24Z6HnC5xhTg3qvCSt4GSxCmD3LoOzo/ANMup3CSeTfnP3fU90PeziLlP9SA+2FkbMu7YWcLT1pVYtwYwKBgBs1PRY1GA3Jk1WBOLtvxiE2IO0n9GyY2eWHOgkZzsTas99TEal2KJMrvd3fmcQulHIid50bQo+GUSAOInnA2Kq6Hp6lb6DFtj0iOEuQfhLwrhWwWfNN7xY3eVTIXGCV/o22O0O+WPqkeDbvmPttzvCUaEJSvo7qyEYg3XPu1AmpAoGAOMWAsQHkK/1Zktx8kMh41rK2bczqpX64v7/4RpV2ZvmU/YDbvb8zoGW6khysi2SKTl4uduCdr7nLVR3iKAEtOzWRrVViI0GReyYgZX09isCG/gmhP3wPWgIkndTIC3ZlyNhewbz9toXkA+bn2YvyKr+R/K289lOc7yQxfnRKhesCgYAaNkVDfXDSLBq6NCuETrz8CI+8e5+jpS50c9+rQeWHNw6vsMayzJ911VF9K05KO2C8ZMBolH0zqvHdihu5A3YgR2SIBVfBkbOabe6XugWo3I5kVFkyK7fFS7HRgQSqNTgG4sM14xnJWF12lAoUatZTtFFd6yNAL+aevMBYhaV2hw==

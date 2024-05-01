@@ -33,6 +33,7 @@ dependencies {
 
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.1'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-jwt:1.1.0.RELEASE'

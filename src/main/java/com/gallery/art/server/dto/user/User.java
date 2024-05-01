@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User extends BaseDto { //todo v
-    private String fullName;
+    private String name;
     private String email;
     private Image image;
     private Role role;
