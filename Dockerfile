@@ -4,7 +4,7 @@ WORKDIR /home/gradle/source
 RUN gradle bootJar
 
 FROM openjdk:17-alpine
-COPY --from=gradleimage /home/gradle/source/build/libs/gallery-0.0.1-SNAPSHOT.jar gallery.jar
+COPY --from=gradleimage /home/gradle/source/build/libs/server-0.0.1-SNAPSHOT.jar server.jar
 
 VOLUME /tmp
 ENTRYPOINT sh -c "java \
@@ -33,4 +33,4 @@ ENTRYPOINT sh -c "java \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Dcom.sun.management.jmxremote.ssl=false \
 -jar \
-gallery.jar"
+server.jar"
