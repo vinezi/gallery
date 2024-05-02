@@ -38,7 +38,7 @@ services:
     mem_limit: 512m
   db-test:
     image: postgres
-    container_name: postgres
+    container_name: postgres-test
     #    restart: always
     ports:
       - 5444:5432
