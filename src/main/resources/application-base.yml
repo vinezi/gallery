@@ -7,7 +7,7 @@ spring:
     name: gallery-art
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST_NAME:185.174.137.251:5432}/gallery
+    url: jdbc:postgresql://${POSTGRES_HOST_NAME:185.174.137.251:5444}/gallery
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:1234}
   jpa:

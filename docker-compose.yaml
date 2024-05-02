@@ -19,7 +19,7 @@ services:
     environment:
       POSTGRES_HOST_NAME: db
       MAIL_LINK: http://185.174.137.251:8080
-      MINIO_HOST_NAME: minio
+      MINIO_HOST_NAME: http://185.174.137.251:9000
     ports:
       - 8080:8080
   minio:
