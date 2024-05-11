@@ -16,4 +16,6 @@ public interface IUserService {
     User createNew(Login login, String code);
 
     void confirm(Long id);
+
+    User appendUserImage(Long imageId);
 }

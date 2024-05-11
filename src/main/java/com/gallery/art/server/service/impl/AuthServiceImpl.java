@@ -13,7 +13,7 @@ import com.gallery.art.server.service.IAuthService;
 import com.gallery.art.server.service.IMailService;
 import com.gallery.art.server.service.IUserService;
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,13 +25,19 @@ import java.util.UUID;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
 
     private final JwtProvider jwtProvider;
     private final IUserService userService;
     private final PasswordEncoder passwordEncoder;
     private final IMailService mailService;
+
+    public AuthServiceImpl(JwtProvider jwtProvider, @Lazy IUserService userService, PasswordEncoder passwordEncoder, IMailService mailService) {
+        this.jwtProvider = jwtProvider;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
+    }
 
     @Override
     public JwtAuthentication getAuthInfo() {

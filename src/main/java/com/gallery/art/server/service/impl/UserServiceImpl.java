@@ -6,6 +6,8 @@ import com.gallery.art.server.dto.user.User;
 import com.gallery.art.server.enums.Role;
 import com.gallery.art.server.mapper.UserMapper;
 import com.gallery.art.server.repository.UserRepository;
+import com.gallery.art.server.service.IAuthService;
+import com.gallery.art.server.service.IImageService;
 import com.gallery.art.server.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +28,8 @@ public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final IAuthService authService;
+    private final IImageService imageService;
 
     @Override
     public UserEntity findUserEntityById(Long id) {
@@ -57,7 +61,7 @@ public class UserServiceImpl implements IUserService {
     public User createNew(Login login, String code) {
         if (existUserByEmail(login.getLogin()))
             throw new IllegalArgumentException(MessageFormat.format("Пользователь с почтой {0} уже существует", login.getLogin()));
-        return userMapper.toDto(userRepository.save(new UserEntity(
+        return saveUser(new UserEntity(
                 "user-" + UUID.randomUUID().toString(),
                 login.getLogin(),
                 false,
@@ -65,7 +69,7 @@ public class UserServiceImpl implements IUserService {
                 false,
                 Role.USER,
                 passwordEncoder.encode(code)
-        )));
+        ));
     }
 
     @Override
@@ -74,4 +78,16 @@ public class UserServiceImpl implements IUserService {
         user.setEmailConfirmed(true);
         userRepository.save(user);
     }
+
+    @Override
+    public User appendUserImage(Long imageId) {
+        UserEntity userEntity = findUserEntityById(authService.getLoggedUserEntity().getId());
+        userEntity.setImage(imageService.findImageEntityById(imageId));
+        return saveUser(userEntity);
+    }
+
+    private User saveUser(UserEntity userEntity) {
+        return userMapper.toDto(userRepository.save(userEntity));
+    }
+
 }
