@@ -7,6 +7,8 @@ import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,6 +39,12 @@ public class UserEntity extends BaseEntity {
     private Role role;
 
     private String code;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    private Set<PostCollection> redeemedLots = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    private Set<PostEntity> posts = new HashSet<>();
 
 
     public UserEntity(String name, String email, boolean emailConfirmed, String password, boolean deleted, Role role, String code) {
