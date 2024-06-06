@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,5 +15,5 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
             "FROM TagEntity t " +
             "WHERE similarity(t.name, :searchString) > 0.1 " +
             "ORDER BY similarity(t.name, :searchString) DESC")
-    Page<TagEntity> findBySimilarity(String searchString, Pageable pageable);
+    Page<TagEntity> findBySimilarity(@Param("searchString") String searchString, Pageable pageable);
 }
