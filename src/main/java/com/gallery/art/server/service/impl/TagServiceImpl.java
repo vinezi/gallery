@@ -104,6 +104,13 @@ public class TagServiceImpl implements ITagService {
         if (!tagRepository.existsById(tagId))
             throw  new EntityNotFoundException(MessageFormat.format("Тэг с id {0} не найден", tagId));
     }
+
+    //todo v name validate
+//    public void existTafEntityByName(String name) {
+//        if (!tagRepository) {
+//
+//        }
+//    }
     
     
 }
