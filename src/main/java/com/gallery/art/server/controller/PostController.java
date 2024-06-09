@@ -54,7 +54,7 @@ public class PostController {
         return postService.updatePost(postId, post);
     }
 
-    @Operation(summary = "Удаление тегов")
+    @Operation(summary = "Удаление постов")
     @DeleteMapping()
     public List<StatusesById> deletePosts(@RequestParam List<Long> postsIds){
         return postService.deletePosts(postsIds);
