@@ -1,7 +1,7 @@
 package com.gallery.art.server.dto.user;
 
-import com.gallery.art.server.db.entity.PostCollection;
 import com.gallery.art.server.dto.post.Post;
+import com.gallery.art.server.dto.postCollection.PostCollection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +18,9 @@ public class UserInfo extends ShortUser {
     private String description;
 
     @Schema(description = "Посты пользователя")
-    private Set<Post> posts = new HashSet<>();
+    private Set<Post> posts = new HashSet<>(); //todo fix to short
 
     @Schema(description = "Коллекции пользователя")
-    private Set<PostCollection> userCollection = new HashSet<>();
+    private Set<PostCollection> userCollection = new HashSet<>(); //todo fix to short
 
 }

@@ -1,4 +1,4 @@
-package com.gallery.art.server.mapper;
+package com.gallery.art.server.config;
 
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.MapperConfig;

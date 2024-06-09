@@ -11,6 +11,7 @@ public interface UserMapper {
 
     ShortUser toDto(UserEntity src);
 
-    @Mapping(target = "posts", ignore = true)
+    @Mapping(target = "posts", ignore = true) //todo v fix
+    @Mapping(target = "userCollection", ignore = true)
     UserInfo toFullDto(UserEntity src);
 }

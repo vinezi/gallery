@@ -3,8 +3,10 @@ package com.gallery.art.server.db.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 @Setter
 @Table(name = "post_collection")
 @NoArgsConstructor
-public class PostCollection extends BaseEntity {
+public class PostCollectionEntity extends BaseEntity {
 
     @Column
     private String title;
@@ -31,5 +33,9 @@ public class PostCollection extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    private OffsetDateTime createdDate;
 
 }
