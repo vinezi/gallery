@@ -13,11 +13,12 @@ public interface PostMapper {
 
     Post toDto(PostEntity source);
 
-    @Mapping(target = "owner", source = "owner")
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "deleted", constant = "false")
+    @Mapping(target = "owner", source = "owner")
+    @Mapping(target = "description", source = "source.description")
     PostEntity asEntity(EditPost source, UserEntity owner);
 
     @Mapping(target = "images", ignore = true)
