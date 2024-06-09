@@ -81,7 +81,7 @@ public class UserServiceImpl implements IUserService {
         userRepository.save(user);
     }
 
-    @Override
+    @Override //todo v to update
     public ShortUser appendUserImage(Long imageId) {
         UserEntity userEntity = findUserEntityById(authService.getLoggedUserEntity().getId());
         ImageEntity image = imageId != null ? imageService.findImageEntityById(imageId) : null;
