@@ -1,8 +1,10 @@
 package com.gallery.art.server.service.impl;
 
+import com.gallery.art.server.db.entity.ImageEntity;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
 import com.gallery.art.server.dto.user.ShortUser;
+import com.gallery.art.server.dto.user.UserInfo;
 import com.gallery.art.server.enums.Role;
 import com.gallery.art.server.mapper.UserMapper;
 import com.gallery.art.server.repository.UserRepository;
@@ -82,8 +84,14 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ShortUser appendUserImage(Long imageId) {
         UserEntity userEntity = findUserEntityById(authService.getLoggedUserEntity().getId());
-        userEntity.setImage(imageService.findImageEntityById(imageId));
+        ImageEntity image = imageId != null ? imageService.findImageEntityById(imageId) : null;
+        userEntity.setImage(image);
         return saveUser(userEntity);
+    }
+
+    @Override
+    public UserInfo getFullUserInfo(Long userId) {
+        return userMapper.toFullDto(findUserEntityById(userId));
     }
 
     private ShortUser saveUser(UserEntity userEntity) {

@@ -3,6 +3,7 @@ package com.gallery.art.server.service;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
 import com.gallery.art.server.dto.user.ShortUser;
+import com.gallery.art.server.dto.user.UserInfo;
 
 public interface IUserService {
     UserEntity findUserEntityById(Long id);
@@ -18,4 +19,6 @@ public interface IUserService {
     void confirm(Long id);
 
     ShortUser appendUserImage(Long imageId);
+
+    UserInfo getFullUserInfo(Long userId);
 }

@@ -41,7 +41,7 @@ public class UserEntity extends BaseEntity {
     private String code;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
-    private Set<PostCollection> redeemedLots = new HashSet<>();
+    private Set<PostCollection> userCollection = new HashSet<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private Set<PostEntity> posts = new HashSet<>();

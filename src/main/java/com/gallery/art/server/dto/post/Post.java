@@ -1,5 +1,6 @@
 package com.gallery.art.server.dto.post;
 
+import com.gallery.art.server.dto.BaseDto;
 import com.gallery.art.server.dto.Image;
 import com.gallery.art.server.dto.tag.Tag;
 import com.gallery.art.server.dto.user.ShortUser;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Schema(description = "Пост")
-public class Post {
+public class Post extends BaseDto {
 
     @Schema(description = "Название поста")
     private String title;
