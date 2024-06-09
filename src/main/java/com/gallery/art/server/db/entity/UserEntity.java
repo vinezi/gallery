@@ -21,6 +21,9 @@ public class UserEntity extends BaseEntity {
     private String name;
 
     @Column
+    private String description;
+
+    @Column
     private String email;
 
     @Column(name = "email_confirmed")

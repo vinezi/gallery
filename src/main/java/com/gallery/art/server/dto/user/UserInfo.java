@@ -14,11 +14,13 @@ import java.util.Set;
 @Schema(description = "Пользователь")
 public class UserInfo extends ShortUser {
 
+    @Schema(description = "Описание")
+    private String description;
+
     @Schema(description = "Посты пользователя")
     private Set<Post> posts = new HashSet<>();
 
     @Schema(description = "Коллекции пользователя")
     private Set<PostCollection> userCollection = new HashSet<>();
 
-    //todo v
 }
