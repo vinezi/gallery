@@ -23,13 +23,13 @@ public class TagController {
     private final ITagService tagService;
 
     @Operation(summary = "Получение пагинированного списка всех тегов")
-    @PostMapping("action/search-by-filter")
+    @PostMapping("action/search-all")
     public Page<Tag> findAllTag(@RequestBody PageInfo pageInfo){
         return tagService.findAllTag(pageInfo);
     }
 
     @Operation(summary = "Поиск тегов")
-    @PostMapping("action/search")
+    @PostMapping("action/search-by-filter")
     public Page<Tag> searchTag(@RequestBody TagSearch filter){
         return tagService.searchTag(filter);
     }

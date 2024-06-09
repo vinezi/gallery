@@ -25,4 +25,6 @@ public interface ITagService {
     Page<Tag> searchTag(TagSearch filter);
 
     List<StatusesById> deleteTags(List<Long> tagIds);
+
+    void existTafEntityById(Long tagId);
 }

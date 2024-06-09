@@ -100,6 +100,7 @@ public class TagServiceImpl implements ITagService {
         return statuses;
     }
 
+    @Override
     public void existTafEntityById(Long tagId) {
         if (!tagRepository.existsById(tagId))
             throw  new EntityNotFoundException(MessageFormat.format("Тэг с id {0} не найден", tagId));

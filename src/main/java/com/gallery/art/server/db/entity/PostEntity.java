@@ -32,6 +32,10 @@ public class PostEntity extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "post_image",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
     private Set<ImageEntity> images = new HashSet<>();
 }

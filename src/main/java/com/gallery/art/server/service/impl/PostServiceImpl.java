@@ -1,11 +1,30 @@
 package com.gallery.art.server.service.impl;
 
+import com.gallery.art.server.db.entity.PostEntity;
+import com.gallery.art.server.dto.common.StatusesById;
+import com.gallery.art.server.dto.post.EditPost;
+import com.gallery.art.server.dto.post.Post;
+import com.gallery.art.server.enums.Statuses;
+import com.gallery.art.server.filters.PostSearch;
+import com.gallery.art.server.filters.common.PageInfo;
+import com.gallery.art.server.mapper.PostMapper;
 import com.gallery.art.server.repository.PostRepository;
+import com.gallery.art.server.service.IAuthService;
+import com.gallery.art.server.service.IImageService;
 import com.gallery.art.server.service.IPostService;
+import com.gallery.art.server.service.ITagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -13,4 +32,92 @@ import javax.transaction.Transactional;
 public class PostServiceImpl implements IPostService {
 
     private final PostRepository postRepository;
+
+    private final ITagService tagService;
+    private final IImageService imageService;
+    private final IAuthService authService;
+
+    private final PostMapper postMapper;
+
+    @Override
+    public PostEntity findPostEntityById(Long lotId) {
+        return postRepository.findById(lotId)
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Пост с id {0} не найден", lotId)));
+    }
+
+    @Override
+    public Post findPostById(Long postId) {
+        return postMapper.toDto(findPostEntityById(postId));
+    }
+
+    @Override
+    public Post createPost(EditPost editPost) {
+        PostEntity postEntity = postMapper.asEntity(editPost, authService.getLoggedUserEntity());
+        postEntity.setImages(editPost.getImages().stream().map(i -> imageService.findImageEntityById(i.getId())).collect(Collectors.toSet()));
+        postEntity.setTags(editPost.getTags().stream().map(i -> tagService.findTagEntityById(i.getId())).collect(Collectors.toSet()));
+        return postMapper.toDto(postRepository.save(postEntity));
+    }
+
+    @Override
+    public Post updatePost(Long postId, EditPost editPost) {
+        PostEntity postEntity = findPostEntityById(postId);
+        postMapper.asEntity(postEntity, editPost);
+
+        if (!authService.getLoggedUserEntity().getId().equals(postEntity.getOwner().getId())) {
+            throw new IllegalArgumentException("пользователь не совпадвет");
+        }
+        postEntity.setImages(editPost.getImages().stream().map(i -> imageService.findImageEntityById(i.getId())).collect(Collectors.toSet()));
+        postEntity.setTags(editPost.getTags().stream().map(i -> tagService.findTagEntityById(i.getId())).collect(Collectors.toSet()));
+
+        return postMapper.toDto(postRepository.save(postEntity));
+    }
+
+    @Override
+    public Page<Post> findAllPost(PageInfo pageInfo) {
+        PageRequest pageRequest = PageRequest.of(pageInfo.getNumber(), pageInfo.getSize());
+        Page<PostEntity> pages = postRepository.findAll(pageRequest);
+        return new PageImpl<>(
+                pages.getContent()
+                        .stream()
+                        .map(postMapper::toDto)
+                        .toList(),
+                pageRequest,
+                pages.getTotalElements()
+        );
+    }
+
+    //todo search
+    @Override
+    public Page<Post> searchPost(PostSearch filter) {
+//        PageRequest pageRequest = PageRequest.of(filter.getPageInfo().getNumber(), filter.getPageInfo().getSize());
+//        Page<PostEntity> pages = postRepository.findBySimilarity(filter.getSearchString(), pageRequest);
+//        return new PageImpl<>(
+//                pages.getContent()
+//                        .stream()
+//                        .map(postMapper::toDto)
+//                        .toList(),
+//                pageRequest,
+//                pages.getTotalElements()
+//        );
+        return null;
+    }
+
+
+    @Override
+    public List<StatusesById> deletePosts(List<Long> postIds){
+        List<StatusesById> statuses = new ArrayList<>();
+        for (Long id : postIds) {
+            if (!postRepository.existsById(id)) {
+                statuses.add(new StatusesById(id, Statuses.NOT_FOUND, "Не найдено"));
+            } else {
+                try {
+                    postRepository.deleteById(id);
+                    statuses.add(new StatusesById(id, Statuses.COMPLETED, ""));
+                } catch (Exception exception) {
+                    statuses.add(new StatusesById(id, Statuses.FAILED, exception.getMessage()));
+                }
+            }
+        }
+        return statuses;
+    }
 }

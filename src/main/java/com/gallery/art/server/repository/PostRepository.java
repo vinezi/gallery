@@ -6,4 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
+
+//    @Query("SELECT p " +
+//            "FROM PostEntity p " +
+//            "WHERE similarity(p.name, :searchString) > 0.1 " +
+//            "ORDER BY similarity(p.name, :searchString) DESC")
+//    Page<PostEntity> findBySimilarity(@Param("searchString") String searchString, Pageable pageable);
 }

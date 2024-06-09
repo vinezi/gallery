@@ -16,4 +16,6 @@ public interface IImageService {
     void deleteIfExists(String bucketName, String fileName, boolean isAutoDelete);
 
     ImageEntity findImageEntityById(Long id);
+
+    void existImageEntityById(Long id);
 }

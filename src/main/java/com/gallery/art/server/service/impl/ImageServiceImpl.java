@@ -95,6 +95,12 @@ public class ImageServiceImpl implements IImageService {
         return imageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Не было найдено изображение с id: " + id));
     }
 
+    @Override
+    public void existImageEntityById(Long id) {
+        if (!imageRepository.existsById(id))
+            throw new EntityNotFoundException("Не было найдено изображение с id: " + id);
+    }
+
     private void objectExistsThrowEx(String bucketName, String fileName) {
         if (!s3.doesObjectExist(bucketName,fileName))
             throw new ObjectNotExistsException(ObjectNotExistsException.ObjectType.file,
