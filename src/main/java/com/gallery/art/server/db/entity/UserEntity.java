@@ -29,7 +29,7 @@ public class UserEntity extends BaseEntity {
     @JsonIgnore
     private String password;
 
-    @OneToOne(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name="image_id")
     private ImageEntity image;
 
