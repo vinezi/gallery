@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,4 +30,8 @@ public class Post {
 
     @Schema(description = "Изображения")
     private Set<Image> images = new HashSet<>();
+
+    @Schema(description = "Дата создания")
+    private OffsetDateTime createdDate;
+
 }

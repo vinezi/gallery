@@ -3,8 +3,10 @@ package com.gallery.art.server.db.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,4 +40,12 @@ public class PostEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "image_id")
     )
     private Set<ImageEntity> images = new HashSet<>();
+
+    @Column
+    private boolean deleted;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    private OffsetDateTime createdDate;
+
 }

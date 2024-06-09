@@ -16,12 +16,16 @@ public interface PostMapper {
     @Mapping(target = "owner", source = "owner")
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "deleted", constant = "false")
     PostEntity asEntity(EditPost source, UserEntity owner);
 
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "title", source = "source.title")
     @Mapping(target = "description", source = "source.description")
     void asEntity(@MappingTarget PostEntity post, EditPost source);
