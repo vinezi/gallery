@@ -1,7 +1,7 @@
 package com.gallery.art.server.controller;
 
 import com.gallery.art.server.dto.auth.Login;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import com.gallery.art.server.service.IAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +44,7 @@ public class AuthController {
 
     @Operation(summary = "Получение данных авторизированного пользователя")
     @GetMapping("logged-user")
-    public User getLoggedUser() {
+    public ShortUser getLoggedUser() {
         return authService.getLoggedUser();
     }
 }

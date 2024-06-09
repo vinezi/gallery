@@ -1,6 +1,6 @@
 package com.gallery.art.server.controller;
 
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import com.gallery.art.server.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +20,7 @@ public class UserController {
 
     @Operation(summary = "Изменение изображения профиля пользователя")
     @PutMapping("append-image")
-    public User appendUserImage(@RequestParam(name = "imageId", required = false) Long imageId) {
+    public ShortUser appendUserImage(@RequestParam(name = "imageId", required = false) Long imageId) {
         return userService.appendUserImage(imageId);
     }
 }

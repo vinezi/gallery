@@ -2,7 +2,7 @@ package com.gallery.art.server.service.impl;
 
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import com.gallery.art.server.enums.Role;
 import com.gallery.art.server.mapper.UserMapper;
 import com.gallery.art.server.repository.UserRepository;
@@ -53,12 +53,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User findUserById(Long id) {
+    public ShortUser findUserById(Long id) {
         return userMapper.toDto(findUserEntityById(id));
     }
 
     @Override
-    public User createNew(Login login, String code) {
+    public ShortUser createNew(Login login, String code) {
         if (existUserByEmail(login.getLogin()))
             throw new IllegalArgumentException(MessageFormat.format("Пользователь с почтой {0} уже существует", login.getLogin()));
         return saveUser(new UserEntity(
@@ -80,13 +80,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User appendUserImage(Long imageId) {
+    public ShortUser appendUserImage(Long imageId) {
         UserEntity userEntity = findUserEntityById(authService.getLoggedUserEntity().getId());
         userEntity.setImage(imageService.findImageEntityById(imageId));
         return saveUser(userEntity);
     }
 
-    private User saveUser(UserEntity userEntity) {
+    private ShortUser saveUser(UserEntity userEntity) {
         return userMapper.toDto(userRepository.save(userEntity));
     }
 

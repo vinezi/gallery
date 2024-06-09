@@ -2,7 +2,7 @@ package com.gallery.art.server.service;
 
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 
 public interface IUserService {
     UserEntity findUserEntityById(Long id);
@@ -11,11 +11,11 @@ public interface IUserService {
 
     boolean existUserByEmail(String email);
 
-    User findUserById(Long id);
+    ShortUser findUserById(Long id);
 
-    User createNew(Login login, String code);
+    ShortUser createNew(Login login, String code);
 
     void confirm(Long id);
 
-    User appendUserImage(Long imageId);
+    ShortUser appendUserImage(Long imageId);
 }

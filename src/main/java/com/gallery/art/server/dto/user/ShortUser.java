@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class User extends BaseDto { //todo v
+public class ShortUser extends BaseDto { //todo v
     private String name;
     private String email;
     private Image image;

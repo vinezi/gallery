@@ -7,7 +7,7 @@ import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.AuthUser;
 import com.gallery.art.server.dto.auth.JwtResponse;
 import com.gallery.art.server.dto.auth.Login;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import com.gallery.art.server.enums.Role;
 import com.gallery.art.server.service.IAuthService;
 import com.gallery.art.server.service.IMailService;
@@ -84,7 +84,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public User getLoggedUser() {
+    public ShortUser getLoggedUser() {
         return userService.findUserById(jwtProvider.getAuthInfo().getUserId());
     }
 

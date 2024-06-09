@@ -3,7 +3,7 @@ package com.gallery.art.server.service;
 import com.gallery.art.server.config.security.principal.JwtAuthentication;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import org.springframework.http.ResponseEntity;
 
 public interface IAuthService {
@@ -17,7 +17,7 @@ public interface IAuthService {
 
     ResponseEntity<?> refresh(String refreshToken);
 
-    User getLoggedUser();
+    ShortUser getLoggedUser();
 
     UserEntity getLoggedUserEntity();
 }

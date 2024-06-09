@@ -2,7 +2,7 @@ package com.gallery.art.server.dto.post;
 
 import com.gallery.art.server.dto.Image;
 import com.gallery.art.server.dto.tag.Tag;
-import com.gallery.art.server.dto.user.User;
+import com.gallery.art.server.dto.user.ShortUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class Post {
     private String description;
 
     @Schema(description = "Автор поста")
-    private User owner;
+    private ShortUser owner;
 
     @Schema(description = "Тэги")
     private Set<Tag> tags = new HashSet<>();
