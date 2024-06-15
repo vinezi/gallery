@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
 
-@Tag(name = "PostCollection API")
+@Tag(name = "Post Collection API")
 @RestController
 @RequestMapping("post-collection")
 @RequiredArgsConstructor
