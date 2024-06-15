@@ -3,6 +3,7 @@ package com.gallery.art.server.service.impl;
 import com.gallery.art.server.db.entity.ImageEntity;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.dto.auth.Login;
+import com.gallery.art.server.dto.user.EditUser;
 import com.gallery.art.server.dto.user.ShortUser;
 import com.gallery.art.server.dto.user.UserInfo;
 import com.gallery.art.server.enums.Role;
@@ -81,11 +82,16 @@ public class UserServiceImpl implements IUserService {
         userRepository.save(user);
     }
 
-    @Override //todo v to update
-    public ShortUser appendUserImage(Long imageId) {
+    @Override
+    public ShortUser upateUserInfo(EditUser editUser) {
         UserEntity userEntity = findUserEntityById(authService.getLoggedUserEntity().getId());
-        ImageEntity image = imageId != null ? imageService.findImageEntityById(imageId) : null;
+        ImageEntity image = editUser != null && editUser.getImageId() != null ? imageService.findImageEntityById(editUser.getImageId()) : null;
         userEntity.setImage(image);
+        userEntity.setDescription(editUser.getDescription());
+        if (userRepository.existsByNameAndIdNot(editUser.getName(), userEntity.getId())) {
+            throw new IllegalArgumentException("ник занят");
+        }
+        userEntity.setName(editUser.getName());
         return saveUser(userEntity);
     }
 
