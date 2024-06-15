@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @Schema(description = "Изменение коллекции постов")
 public class EditPostCollection {
 
+    @NotBlank(message = "не может быть пустым")
     @Schema(description = "Название")
     private String title;
 

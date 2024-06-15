@@ -5,6 +5,7 @@ import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
 import com.gallery.art.server.enums.Statuses;
+import com.gallery.art.server.exeption.ObjectNotExistsException;
 import com.gallery.art.server.filters.PostSearch;
 import com.gallery.art.server.filters.common.PageInfo;
 import com.gallery.art.server.mapper.PostMapper;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -40,9 +40,12 @@ public class PostServiceImpl implements IPostService {
     private final PostMapper postMapper;
 
     @Override
-    public PostEntity findPostEntityById(Long lotId) {
-        return postRepository.findById(lotId)
-                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Пост с id {0} не найден", lotId)));
+    public PostEntity findPostEntityById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new  ObjectNotExistsException(
+                ObjectNotExistsException.ObjectType.post,
+                MessageFormat.format("Пост с id {0} не найден", postId),
+                postId
+        ));
     }
 
     @Override

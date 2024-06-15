@@ -34,17 +34,10 @@ public class ObjectNotExistsException extends LogicException {
     }
 
     public enum ObjectType {
-        direction,
-        aboutUs,
-        client,
-        contact,
-        messenger,
-        social,
+        post,
+        postCollection,
         email,
-        telephone,
-        vacancy,
         file,
-        bonus,
         user
     }
 
