@@ -29,4 +29,7 @@ public class EditPost {
     @Size(max = 3, min = 1, message = "от 1 до 3")
     @Schema(description = "Изображения")
     private Set<Image> images = new HashSet<>();
+
+    @Schema(description = "Скытый")
+    private boolean hide = false;
 }

@@ -41,11 +41,14 @@ public class PostEntity extends BaseEntity {
     )
     private Set<ImageEntity> images = new HashSet<>();
 
-    @Column
-    private boolean deleted;
+    @Column(columnDefinition = "false", nullable = false)
+    private boolean deleted = false;
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
     private OffsetDateTime createdDate;
+
+    @Column(columnDefinition = "false", nullable = false)
+    private boolean hide = false;
 
 }

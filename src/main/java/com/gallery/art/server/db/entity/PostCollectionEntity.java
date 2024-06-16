@@ -38,4 +38,9 @@ public class PostCollectionEntity extends BaseEntity {
     @CreatedDate
     private OffsetDateTime createdDate;
 
+    @Column(columnDefinition = "false", nullable = false)
+    private boolean deleted = false;
+
+    @Column(columnDefinition = "false", nullable = false)
+    private boolean hide = false;
 }
