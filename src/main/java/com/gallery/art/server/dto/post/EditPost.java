@@ -30,6 +30,6 @@ public class EditPost {
     @Schema(description = "Изображения")
     private Set<Image> images = new HashSet<>();
 
-    @Schema(description = "Скытый")
+    @Schema(description = "Скытый", example = "false")
     private boolean hide = false;
 }

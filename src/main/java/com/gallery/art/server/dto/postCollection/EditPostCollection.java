@@ -24,6 +24,6 @@ public class EditPostCollection {
     @Schema(description = "Посты")
     private Set<Post> posts = new HashSet<>();
 
-    @Schema(description = "Скытый")
+    @Schema(description = "Скытый", example = "false")
     private boolean hide = false;
 }
