@@ -16,6 +16,6 @@ public class PageInfo {
     @Schema(description = "Номер страницы")
     int number;
 
-    @Schema(description = "Количество сущностей")
-    int size = 10;
+    @Schema(description = "Количество сущностей", example = "10")
+    int size;
 }
