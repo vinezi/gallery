@@ -1,6 +1,9 @@
 package com.gallery.art.server.service.impl;
 
 import com.gallery.art.server.db.entity.PostEntity;
+import com.gallery.art.server.db.entity.UserEntity;
+import com.gallery.art.server.db.entity.saved.SavedPostEntity;
+import com.gallery.art.server.db.entity.saved.SavedPostId;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
@@ -10,6 +13,7 @@ import com.gallery.art.server.filters.PostSearch;
 import com.gallery.art.server.filters.common.PageInfo;
 import com.gallery.art.server.mapper.PostMapper;
 import com.gallery.art.server.repository.PostRepository;
+import com.gallery.art.server.repository.saved.SavedPostRepository;
 import com.gallery.art.server.service.IAuthService;
 import com.gallery.art.server.service.IImageService;
 import com.gallery.art.server.service.IPostService;
@@ -32,6 +36,7 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements IPostService {
 
     private final PostRepository postRepository;
+    private final SavedPostRepository savedPostRepository;
 
     private final ITagService tagService;
     private final IImageService imageService;
@@ -122,5 +127,21 @@ public class PostServiceImpl implements IPostService {
             }
         }
         return statuses;
+    }
+
+    @Override
+    public Boolean addToSaved(Long postId) {
+        UserEntity user = authService.getLoggedUserEntity();
+        PostEntity post = findPostEntityById(postId);
+        if (post.getOwner().getId().equals(user.getId())) {
+            return true;
+        }
+        if (savedPostRepository.existsById(new SavedPostId(user.getId(), postId))) {
+            savedPostRepository.deleteById(new SavedPostId(user.getId(), postId));
+            return false;
+        } else {
+            savedPostRepository.save(new SavedPostEntity(user, post));
+            return true;
+        }
     }
 }

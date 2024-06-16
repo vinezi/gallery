@@ -24,4 +24,6 @@ public interface IPostService {
     Page<Post> searchPost(PostSearch filter);
 
     List<StatusesById> deletePosts(List<Long> postIds);
+
+    Boolean addToSaved(Long postId);
 }

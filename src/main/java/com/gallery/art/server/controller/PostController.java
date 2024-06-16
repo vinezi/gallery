@@ -52,4 +52,11 @@ public class PostController {
     public List<StatusesById> deletePosts(@RequestParam List<Long> postsIds){
         return postService.deletePosts(postsIds);
     }
+
+    @Operation(summary = "Добавление или удление из сохраненных")
+    @PutMapping("action/search-all/{id}")
+    public boolean addToSaved(@Positive @PathVariable("id") Long postId){
+        return postService.addToSaved(postId);
+    }
+
 }
