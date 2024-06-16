@@ -23,4 +23,10 @@ public class UserInfo extends ShortUser {
     @Schema(description = "Коллекции пользователя")
     private Set<ShortPostCollection> userCollection = new HashSet<>();
 
+    @Schema(description = "Сохраненные посты пользователя")
+    private Set<ShortPost> savedPosts = new HashSet<>();
+
+    @Schema(description = "Сохраненные коллекции пользователя")
+    private Set<ShortPostCollection> savedCollections = new HashSet<>();
+
 }
