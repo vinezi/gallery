@@ -3,7 +3,6 @@ package com.gallery.art.server.controller;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
-import com.gallery.art.server.filters.PostSearch;
 import com.gallery.art.server.filters.common.PageInfo;
 import com.gallery.art.server.service.IPostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,16 +23,10 @@ public class PostController {
 
     private final IPostService postService;
 
-    @Operation(summary = "Получение пагинированного списка всех тегов")
+    @Operation(summary = "Получение пагинированного списка всех постов")
     @PostMapping("action/search-all")
     public Page<Post> findAllPost(@Valid @RequestBody PageInfo pageInfo){
         return postService.findAllPost(pageInfo);
-    }
-
-    @Operation(summary = "Поиск тегов (НЕ РЕАЛИЗОВАНО)")
-    @PostMapping("action/search-by-filter")
-    public Page<Post> searchPost(@Valid @RequestBody PostSearch filter){
-        return postService.searchPost(filter);
     }
 
     @Operation(summary = "Получение поста")
