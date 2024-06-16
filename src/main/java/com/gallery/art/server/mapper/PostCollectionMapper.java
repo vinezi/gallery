@@ -24,6 +24,7 @@ public interface PostCollectionMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "posts", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "description", source = "source.description")
     void asEntity(@MappingTarget PostCollectionEntity postCollection, EditPostCollection source);
 }
