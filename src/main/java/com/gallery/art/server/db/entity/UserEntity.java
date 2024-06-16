@@ -1,5 +1,7 @@
 package com.gallery.art.server.db.entity;
 
+import com.gallery.art.server.db.entity.saved.SavedCollectionEntity;
+import com.gallery.art.server.db.entity.saved.SavedPostEntity;
 import com.gallery.art.server.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,19 +51,11 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private Set<PostEntity> posts = new HashSet<>();
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "saved_post_collections",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "post_collection_id")
-//    )
-//    private Set<PostCollectionEntity> savedCollections = new HashSet<>();
-//
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "saved_post",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "post_id")
-//    )
-//    private Set<PostEntity> savedPosts = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<SavedCollectionEntity> savedCollections = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<SavedPostEntity> savedPosts = new HashSet<>();
 
     public UserEntity(String name, String email, boolean emailConfirmed, String password, boolean deleted, Role role, String code) {
         this.name = name;
