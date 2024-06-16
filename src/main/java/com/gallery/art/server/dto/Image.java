@@ -18,4 +18,10 @@ public class Image extends BaseDto {
 
     @Schema(description = "Путь к полному изображению")
     protected String fullFilename;
+
+    public Image(Long id, String previewFilename, String fullFilename) {
+        this.id = id;
+        this.previewFilename = previewFilename;
+        this.fullFilename = fullFilename;
+    }
 }

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Schema(description = "Сокращенная коллекции постов")
@@ -15,5 +17,5 @@ public class ShortPostCollection extends BaseDto {
     private String title;
 
     @Schema(description = "Первый, сокращенный пост коллекции")
-    private ShortPost shortPost;
+    private Set<ShortPost> shortPosts;
 }
