@@ -17,5 +17,5 @@ public class PageInfo {
     int number;
 
     @Schema(description = "Количество сущностей")
-    int size;
+    int size = 10;
 }
