@@ -1,5 +1,6 @@
 package com.gallery.art.server.db.entity;
 
+import com.gallery.art.server.db.entity.saved.SavedCollectionEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,4 +44,7 @@ public class PostCollectionEntity extends BaseEntity {
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
     private boolean hide = false;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postCollection")
+    private Set<SavedCollectionEntity> savedByUser;
 }

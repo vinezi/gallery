@@ -3,7 +3,7 @@ package com.gallery.art.server.controller;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.postCollection.EditPostCollection;
 import com.gallery.art.server.dto.postCollection.PostCollection;
-import com.gallery.art.server.filters.common.PageInfo;
+import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.service.IPostCollectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +25,8 @@ public class PostCollectionController {
 
     @Operation(summary = "Получение пагинированного списка всех коллекций постов")
     @PostMapping("action/search-all")
-    public Page<PostCollection> findAllPostCollection(@Valid @RequestBody PageInfo pageInfo){
-        return postCollectionService.findAllPostCollection(pageInfo);
+    public Page<PostCollection> findAllPostCollection(@Valid @RequestBody PostFilter filter){
+        return postCollectionService.findAllPostCollection(filter);
     }
 
     @Operation(summary = "Получение коллекции постов")
@@ -52,4 +52,11 @@ public class PostCollectionController {
     public List<StatusesById> deletePostCollections(@RequestParam List<Long> postsIds){
         return postCollectionService.deletePostCollections(postsIds);
     }
+
+    @Operation(summary = "Добавление или удление из сохраненных")
+    @PutMapping("action/add-to-saved/{id}")
+    public boolean addToSaved(@Positive @PathVariable("id") Long postId){
+        return postCollectionService.addToSaved(postId);
+    }
+
 }

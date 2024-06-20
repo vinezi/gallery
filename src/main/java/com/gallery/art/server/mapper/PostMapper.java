@@ -23,6 +23,7 @@ public interface PostMapper {
     @Mapping(target = "image", source = "images", qualifiedByName = "toImageShort")
     ShortPost toShortDto(PostEntity source);
 
+    @Mapping(target = "savedByUser", ignore = true)
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
@@ -31,6 +32,7 @@ public interface PostMapper {
     @Mapping(target = "description", source = "source.description")
     PostEntity asEntity(EditPost source, UserEntity owner);
 
+    @Mapping(target = "savedByUser", ignore = true)
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "owner", ignore = true)

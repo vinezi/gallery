@@ -1,14 +1,18 @@
 package com.gallery.art.server.service.impl;
 
 import com.gallery.art.server.db.entity.PostCollectionEntity;
+import com.gallery.art.server.db.entity.UserEntity;
+import com.gallery.art.server.db.entity.saved.SavedCollectionEntity;
+import com.gallery.art.server.db.entity.saved.SavedCollectionId;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.postCollection.EditPostCollection;
 import com.gallery.art.server.dto.postCollection.PostCollection;
 import com.gallery.art.server.enums.Statuses;
 import com.gallery.art.server.exeption.ObjectNotExistsException;
-import com.gallery.art.server.filters.common.PageInfo;
+import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.mapper.PostCollectionMapper;
 import com.gallery.art.server.repository.PostCollectionRepository;
+import com.gallery.art.server.repository.saved.SavedPostCollectionRepository;
 import com.gallery.art.server.service.IAuthService;
 import com.gallery.art.server.service.IPostCollectionService;
 import com.gallery.art.server.service.IPostService;
@@ -24,12 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gallery.art.server.utils.PostSpecificationUtils.postCollectionEntitySpecificationForFilter;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PostCollectionServiceImpl implements IPostCollectionService {
 
     private final PostCollectionRepository postCollectionRepository;
+    private final SavedPostCollectionRepository savedCollectionRepository;
 
     private final IPostService postService;
     private final IAuthService authService;
@@ -71,9 +78,15 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
     }
 
     @Override
-    public Page<PostCollection> findAllPostCollection(PageInfo pageInfo) {
-        PageRequest pageRequest = PageRequest.of(pageInfo.getNumber(), pageInfo.getSize());
-        Page<PostCollectionEntity> pages = postCollectionRepository.findAll(pageRequest);
+    public Page<PostCollection> findAllPostCollection(PostFilter filter) {
+        PageRequest pageRequest = PageRequest.of(filter.getPageInfo().getNumber(), filter.getPageInfo().getSize());
+
+        if (filter.getFilterPostRequest() != null && filter.getFilterPostRequest().saved() != null
+                && filter.getFilterPostRequest().saved() && filter.getFilterPostRequest().userId() == null) {
+            throw new IllegalArgumentException("Поиск сохраненных только по юзеру");
+        }
+        Page<PostCollectionEntity> pages = filter.getFilterPostRequest() == null ?
+                postCollectionRepository.findAll(pageRequest) : postCollectionRepository.findAll(postCollectionEntitySpecificationForFilter(filter.getFilterPostRequest()), pageRequest);
         return new PageImpl<>(
                 pages.getContent()
                         .stream()
@@ -100,5 +113,21 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
             }
         }
         return statuses;
+    }
+
+    @Override
+    public Boolean addToSaved(Long collectionId) {
+        UserEntity user = authService.getLoggedUserEntity();
+        PostCollectionEntity collection = findPostCollectionEntityById(collectionId);
+        if (collection.getOwner().getId().equals(user.getId())) {
+            return true;
+        }
+        if (savedCollectionRepository.existsById(new SavedCollectionId(user.getId(), collectionId))) {
+            savedCollectionRepository.deleteById(new SavedCollectionId(user.getId(), collectionId));
+            return false;
+        } else {
+            savedCollectionRepository.save(new SavedCollectionEntity(user, collection));
+            return true;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.gallery.art.server.service.impl;
 
+import com.gallery.art.server.db.entity.PostCollectionEntity;
 import com.gallery.art.server.db.entity.PostEntity;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.db.entity.saved.SavedPostEntity;
@@ -10,14 +11,11 @@ import com.gallery.art.server.dto.post.Post;
 import com.gallery.art.server.enums.Statuses;
 import com.gallery.art.server.exeption.ObjectNotExistsException;
 import com.gallery.art.server.filters.PostSearch;
-import com.gallery.art.server.filters.common.PageInfo;
+import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.mapper.PostMapper;
 import com.gallery.art.server.repository.PostRepository;
 import com.gallery.art.server.repository.saved.SavedPostRepository;
-import com.gallery.art.server.service.IAuthService;
-import com.gallery.art.server.service.IImageService;
-import com.gallery.art.server.service.IPostService;
-import com.gallery.art.server.service.ITagService;
+import com.gallery.art.server.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gallery.art.server.utils.PostSpecificationUtils.postEntitySpecificationForFilter;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -41,6 +41,7 @@ public class PostServiceImpl implements IPostService {
     private final ITagService tagService;
     private final IImageService imageService;
     private final IAuthService authService;
+    private final IPostCollectionService postCollectionService;
 
     private final PostMapper postMapper;
 
@@ -81,9 +82,15 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Page<Post> findAllPost(PageInfo pageInfo) {
-        PageRequest pageRequest = PageRequest.of(pageInfo.getNumber(), pageInfo.getSize());
-        Page<PostEntity> pages = postRepository.findAll(pageRequest);
+    public Page<Post> findAllPost(PostFilter filter) {
+        PageRequest pageRequest = PageRequest.of(filter.getPageInfo().getNumber(), filter.getPageInfo().getSize());
+
+        if (filter.getFilterPostRequest() != null && filter.getFilterPostRequest().saved() != null
+                && filter.getFilterPostRequest().saved() && filter.getFilterPostRequest().userId() == null) {
+            throw new IllegalArgumentException("Поиск сохраненных только по юзеру");
+        }
+        Page<PostEntity> pages = filter.getFilterPostRequest() == null ?
+                postRepository.findAll(pageRequest) : postRepository.findAll(postEntitySpecificationForFilter(filter.getFilterPostRequest()), pageRequest);
         return new PageImpl<>(
                 pages.getContent()
                         .stream()

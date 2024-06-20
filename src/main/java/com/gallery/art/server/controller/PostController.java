@@ -3,7 +3,7 @@ package com.gallery.art.server.controller;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
-import com.gallery.art.server.filters.common.PageInfo;
+import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.service.IPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +25,8 @@ public class PostController {
 
     @Operation(summary = "Получение пагинированного списка всех постов")
     @PostMapping("action/search-all")
-    public Page<Post> findAllPost(@Valid @RequestBody PageInfo pageInfo){
-        return postService.findAllPost(pageInfo);
+    public Page<Post> findAllPost(@Valid @RequestBody PostFilter filter){
+        return postService.findAllPost(filter);
     }
 
     @Operation(summary = "Получение поста")
@@ -54,7 +54,7 @@ public class PostController {
     }
 
     @Operation(summary = "Добавление или удление из сохраненных")
-    @PutMapping("action/search-all/{id}")
+    @PutMapping("action/add-to-saved/{id}")
     public boolean addToSaved(@Positive @PathVariable("id") Long postId){
         return postService.addToSaved(postId);
     }
