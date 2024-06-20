@@ -12,6 +12,7 @@ import com.gallery.art.server.repository.ImageRepository;
 import com.gallery.art.server.service.IImageService;
 import com.google.common.io.Files;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -26,6 +27,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static org.springframework.http.MediaType.IMAGE_PNG;
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -46,8 +50,16 @@ public class ImageServiceImpl implements IImageService {
         byte[] content = IOUtils.toByteArray(stream);
         object.close();
         Path path = new File(fileName).toPath();
+
+        MediaType mediaType = IMAGE_PNG;
+        try {
+            mediaType = MediaType.parseMediaType(java.nio.file.Files.probeContentType(path));
+        } catch (Exception ex) {
+            log.info("Тип не распознан");
+        }
+
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(java.nio.file.Files.probeContentType(path)))
+                .contentType(mediaType)
                 .body(content);
     }
 

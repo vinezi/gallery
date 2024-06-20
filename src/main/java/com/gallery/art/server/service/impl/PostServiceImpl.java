@@ -41,7 +41,7 @@ public class PostServiceImpl implements IPostService {
     private final ITagService tagService;
     private final IImageService imageService;
     private final IAuthService authService;
-    private final IPostCollectionService postCollectionService;
+//    private final IPostCollectionService postCollectionService; //todo
 
     private final PostMapper postMapper;
 
@@ -150,5 +150,26 @@ public class PostServiceImpl implements IPostService {
             savedPostRepository.save(new SavedPostEntity(user, post));
             return true;
         }
+    }
+
+    @Override
+    public Boolean addToCollections(Long postId, Long collectionId) {
+//        UserEntity user = authService.getLoggedUserEntity();
+//        PostEntity post = findPostEntityById(postId);
+//        PostCollectionEntity collectionEntity = postCollectionService.findPostCollectionEntityById(collectionId);
+//
+//        if (!collectionEntity.getOwner().getId().equals(user.getId())) {
+//            throw new IllegalStateException("Нельзя добавить пост в чужую коллекцию");
+//        }
+//
+//        // todo
+//        if (savedPostRepository.existsById(new SavedPostId(user.getId(), postId))) {
+//            savedPostRepository.deleteById(new SavedPostId(user.getId(), postId));
+//            return false;
+//        } else {
+//            savedPostRepository.save(new SavedPostEntity(user, post));
+//            return true;
+//        }
+        return false;
     }
 }

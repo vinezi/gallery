@@ -48,3 +48,4 @@ s3:
   secretKey: ${MINIO_PASSWORD:toortoor}
 custom:
   pathSave: /tmp/
+#  pathSave: G:\111
