@@ -47,5 +47,6 @@ s3:
   accessKey: ${MINIO_USER:rootroot}
   secretKey: ${MINIO_PASSWORD:toortoor}
 custom:
+  compression: 6.0
   pathSave: /tmp/
 #  pathSave: G:\111
