@@ -13,6 +13,7 @@ import com.gallery.art.server.service.IImageService;
 import com.google.common.io.Files;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +39,8 @@ public class ImageServiceImpl implements IImageService {
 
     @Value("${custom.pathSave}")
     private String path;
+    @Value("${custom.compression}")
+    private String compression;
     private final AmazonS3 s3;
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
@@ -84,13 +88,24 @@ public class ImageServiceImpl implements IImageService {
         if (!s3.doesObjectExist(bucketName, name))
             throw new IllegalStateException("Изображение не сохранилось!");
 
-        return imageMapper.toDto(imageRepository.save(
-                ImageEntity.builder()
-                        .previewFilename(fullName)
-                        .fullFilename(fullName)
-                        .fileExtension(FilenameUtils.getExtension(originalfile.getOriginalFilename()))
-                        .build()
-        ));
+        if (compression == null) {
+            return saveImage(fullName, fullName, FilenameUtils.getExtension(originalfile.getOriginalFilename()));
+        } else {
+            String modifiedFileName = name.replace(".", "-preview.");
+            File compressedFile = new File(path + modifiedFileName);
+            compressedFile.createNewFile();
+            compressedFile.canWrite();
+            compressedFile.canRead();
+            Thumbnails.of(originalfile.getInputStream()).scale(1 / Double.parseDouble(compression))
+                    .outputFormat(FilenameUtils.getExtension(originalfile.getOriginalFilename())).imageType(BufferedImage.TYPE_INT_ARGB).toFile(compressedFile);
+
+            s3.putObject(bucketName, modifiedFileName, compressedFile);
+
+            String fullPreviewFileName = bucketName + '/' + modifiedFileName;
+            if (!s3.doesObjectExist(bucketName, modifiedFileName))
+                throw new IllegalStateException("Предварительный просмотр изображения не был сохранен!");
+            return saveImage(fullPreviewFileName, fullName, FilenameUtils.getExtension(originalfile.getOriginalFilename()));
+        }
     }
 
     @Override
@@ -117,6 +132,16 @@ public class ImageServiceImpl implements IImageService {
         if (!s3.doesObjectExist(bucketName,fileName))
             throw new ObjectNotExistsException(ObjectNotExistsException.ObjectType.file,
                     "Изображение не найдено по " + bucketName + "/" + fileName + " пути");
+    }
+
+    private Image saveImage(String preview, String fullName, String extension) {
+        return imageMapper.toDto(imageRepository.save(
+                ImageEntity.builder()
+                        .previewFilename(preview)
+                        .fullFilename(fullName)
+                        .fileExtension(extension)
+                        .build()
+        ));
     }
 
 
