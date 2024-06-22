@@ -100,7 +100,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     private AuthUser generateUserInfoFromRefreshToken(Claims claims) {
-        return new AuthUser(claims.get("userId", Long.class), claims.get("role", Role.class));
+        return new AuthUser(claims.get("userId", Long.class), Role.valueOf(claims.get("role", String.class)));
     }
 
 }
