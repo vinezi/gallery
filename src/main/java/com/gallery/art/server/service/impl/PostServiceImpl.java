@@ -1,6 +1,5 @@
 package com.gallery.art.server.service.impl;
 
-import com.gallery.art.server.db.entity.PostCollectionEntity;
 import com.gallery.art.server.db.entity.PostEntity;
 import com.gallery.art.server.db.entity.UserEntity;
 import com.gallery.art.server.db.entity.saved.SavedPostEntity;
@@ -15,7 +14,10 @@ import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.mapper.PostMapper;
 import com.gallery.art.server.repository.PostRepository;
 import com.gallery.art.server.repository.saved.SavedPostRepository;
-import com.gallery.art.server.service.*;
+import com.gallery.art.server.service.IAuthService;
+import com.gallery.art.server.service.IImageService;
+import com.gallery.art.server.service.IPostService;
+import com.gallery.art.server.service.ITagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -153,16 +155,15 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Boolean addToCollections(Long postId, Long collectionId) {
-//        UserEntity user = authService.getLoggedUserEntity();
-//        PostEntity post = findPostEntityById(postId);
+    public Boolean addToCollections(Long postId, Long collectionId) {       // todo
+        UserEntity user = authService.getLoggedUserEntity();
+        PostEntity post = findPostEntityById(postId);
 //        PostCollectionEntity collectionEntity = postCollectionService.findPostCollectionEntityById(collectionId);
 //
 //        if (!collectionEntity.getOwner().getId().equals(user.getId())) {
 //            throw new IllegalStateException("Нельзя добавить пост в чужую коллекцию");
 //        }
 //
-//        // todo
 //        if (savedPostRepository.existsById(new SavedPostId(user.getId(), postId))) {
 //            savedPostRepository.deleteById(new SavedPostId(user.getId(), postId));
 //            return false;
@@ -171,5 +172,10 @@ public class PostServiceImpl implements IPostService {
 //            return true;
 //        }
         return false;
+    }
+
+    @Override
+    public boolean savedByUser(Long postId, Long userId) {
+        return savedPostRepository.existsById(new SavedPostId(userId, postId));
     }
 }

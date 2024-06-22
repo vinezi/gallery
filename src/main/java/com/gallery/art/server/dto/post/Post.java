@@ -35,4 +35,7 @@ public class Post extends BaseDto {
     @Schema(description = "Дата создания")
     private OffsetDateTime createdDate;
 
+    @Schema(description = "Сохранен у пользователя")
+    private boolean saved;
+
 }

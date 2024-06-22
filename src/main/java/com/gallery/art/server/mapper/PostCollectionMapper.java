@@ -18,6 +18,7 @@ public interface PostCollectionMapper {
     @Mapping(target = "shortPosts", source = "posts")
     ShortPostCollection toShortDto(PostCollectionEntity source);
 
+    @Mapping(target = "saved", ignore = true)
     @Mapping(target = "savedByUser", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "posts", ignore = true)
@@ -25,6 +26,7 @@ public interface PostCollectionMapper {
     @Mapping(target = "description", source = "postCollection.description")
     PostCollectionEntity asEntity(EditPostCollection postCollection, UserEntity userEntity);
 
+    @Mapping(target = "saved", ignore = true)
     @Mapping(target = "savedByUser", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdDate", ignore = true)

@@ -130,4 +130,9 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
             return true;
         }
     }
+
+    @Override
+    public boolean savedByUser(Long collectionId, Long userId) {
+        return savedCollectionRepository.existsById(new SavedCollectionId(userId, collectionId));
+    }
 }

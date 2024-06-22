@@ -1,6 +1,7 @@
 package com.gallery.art.server.db.entity;
 
 import com.gallery.art.server.db.entity.saved.SavedPostEntity;
+import com.gallery.art.server.db.listener.PostEntityListener;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Table(name = "posts")
 @NoArgsConstructor
+@EntityListeners(PostEntityListener.class)
 public class PostEntity extends BaseEntity {
 
     @Column
@@ -54,4 +56,7 @@ public class PostEntity extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private Set<SavedPostEntity> savedByUser;
+
+    @Transient
+    private boolean saved;
 }

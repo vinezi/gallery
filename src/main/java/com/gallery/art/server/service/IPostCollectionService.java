@@ -23,4 +23,6 @@ public interface IPostCollectionService {
     List<StatusesById> deletePostCollections(List<Long> postCollectionIds);
 
     Boolean addToSaved(Long collectionId);
+
+    boolean savedByUser(Long collectionId, Long userId);
 }
