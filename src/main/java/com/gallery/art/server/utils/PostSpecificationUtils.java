@@ -2,6 +2,7 @@ package com.gallery.art.server.utils;
 
 import com.gallery.art.server.db.entity.PostCollectionEntity;
 import com.gallery.art.server.db.entity.PostEntity;
+import com.gallery.art.server.filters.post.FilterPostByCollectionRequest;
 import com.gallery.art.server.filters.post.FilterPostRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
@@ -61,6 +62,23 @@ public class PostSpecificationUtils {
         return result;
     }
 
+    public static Specification<PostEntity> postInCollectionEntitySpecificationForFilter(FilterPostByCollectionRequest filterPostRequest) {
+        Set<Specification<PostEntity>> specifications = Set.of(getContainsPostByCollectionSpecification(filterPostRequest.collectionId()));
+
+        //todo hide
+        Specification<PostEntity> result = null;
+        for (Specification<PostEntity> spec : specifications) {
+            if (result == null) {
+                result = spec;
+            } else {
+                result = result.and(spec);
+            }
+        }
+        return result;
+    }
+
+
+
     private static Specification<PostEntity> getContainsOwnerSpecification(Long value) {
         return new Specification<>() {
             @Nullable
@@ -97,6 +115,16 @@ public class PostSpecificationUtils {
             @Override
             public Predicate toPredicate(Root<PostCollectionEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 return criteriaBuilder.equal(root.join("savedByUser").get("user").get("id"), value);
+            }
+        };
+    }
+
+    private static Specification<PostEntity> getContainsPostByCollectionSpecification(Long value) {
+        return new Specification<>() {
+            @Nullable
+            @Override
+            public Predicate toPredicate(Root<PostEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.equal(root.join("inCollection").get("collection").get("id"), value);
             }
         };
     }

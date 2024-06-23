@@ -5,6 +5,7 @@ import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
 import com.gallery.art.server.filters.PostSearch;
+import com.gallery.art.server.filters.post.PostByCollectionFilter;
 import com.gallery.art.server.filters.post.PostFilter;
 import org.springframework.data.domain.Page;
 
@@ -20,6 +21,8 @@ public interface IPostService {
     Post updatePost(Long postId, EditPost editPost);
 
     Page<Post> findAllPost(PostFilter pageInfo);
+
+    Page<Post> findPostByCollection(PostByCollectionFilter filter);
 
     Page<Post> searchPost(PostSearch filter);
 

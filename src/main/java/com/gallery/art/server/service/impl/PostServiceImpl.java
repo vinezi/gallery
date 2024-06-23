@@ -10,6 +10,7 @@ import com.gallery.art.server.dto.post.Post;
 import com.gallery.art.server.enums.Statuses;
 import com.gallery.art.server.exeption.ObjectNotExistsException;
 import com.gallery.art.server.filters.PostSearch;
+import com.gallery.art.server.filters.post.PostByCollectionFilter;
 import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.mapper.PostMapper;
 import com.gallery.art.server.repository.PostRepository;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.gallery.art.server.utils.PostSpecificationUtils.postEntitySpecificationForFilter;
+import static com.gallery.art.server.utils.PostSpecificationUtils.postInCollectionEntitySpecificationForFilter;
 
 @Service
 @Transactional
@@ -92,6 +94,21 @@ public class PostServiceImpl implements IPostService {
         }
         Page<PostEntity> pages = filter.getFilterPostRequest() == null ?
                 postRepository.findAll(pageRequest) : postRepository.findAll(postEntitySpecificationForFilter(filter.getFilterPostRequest()), pageRequest);
+        return new PageImpl<>(
+                pages.getContent()
+                        .stream()
+                        .map(postMapper::toDto)
+                        .toList(),
+                pageRequest,
+                pages.getTotalElements()
+        );
+    }
+
+    @Override
+    public Page<Post> findPostByCollection(PostByCollectionFilter filter) {
+        PageRequest pageRequest = PageRequest.of(filter.getPageInfo().getNumber(), filter.getPageInfo().getSize());
+
+        Page<PostEntity> pages = postRepository.findAll(postInCollectionEntitySpecificationForFilter(filter.getFilterPostByCollectionRequest()), pageRequest);
         return new PageImpl<>(
                 pages.getContent()
                         .stream()

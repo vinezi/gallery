@@ -3,6 +3,7 @@ package com.gallery.art.server.controller;
 import com.gallery.art.server.dto.common.StatusesById;
 import com.gallery.art.server.dto.post.EditPost;
 import com.gallery.art.server.dto.post.Post;
+import com.gallery.art.server.filters.post.PostByCollectionFilter;
 import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.service.IPostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,12 @@ public class PostController {
     @PostMapping("action/search-all")
     public Page<Post> findAllPost(@Valid @RequestBody PostFilter filter){
         return postService.findAllPost(filter);
+    }
+
+    @Operation(summary = "Получение пагинированного списка всех постов")
+    @PostMapping("action/search-by-collection")
+    public Page<Post> findPostByCollection(@Valid @RequestBody PostByCollectionFilter filter){
+        return postService.findPostByCollection(filter);
     }
 
     @Operation(summary = "Получение поста")

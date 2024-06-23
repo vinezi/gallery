@@ -1,5 +1,6 @@
 package com.gallery.art.server.db.entity;
 
+import com.gallery.art.server.db.entity.collection.PostInCollectionEntity;
 import com.gallery.art.server.db.entity.saved.SavedPostEntity;
 import com.gallery.art.server.db.listener.PostEntityListener;
 import lombok.Getter;
@@ -43,6 +44,9 @@ public class PostEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "image_id")
     )
     private Set<ImageEntity> images = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private Set<PostInCollectionEntity> inCollection = new HashSet<>();
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
     private boolean deleted = false;
