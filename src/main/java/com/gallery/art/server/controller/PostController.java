@@ -30,7 +30,7 @@ public class PostController {
         return postService.findAllPost(filter);
     }
 
-    @Operation(summary = "Получение пагинированного списка всех постов")
+    @Operation(summary = "Получение пагинированного списка постов коллекции")
     @PostMapping("action/search-by-collection")
     public Page<Post> findPostByCollection(@Valid @RequestBody PostByCollectionFilter filter){
         return postService.findPostByCollection(filter);
