@@ -1,7 +1,10 @@
 package com.gallery.art.server.service.impl;
 
 import com.gallery.art.server.db.entity.PostCollectionEntity;
+import com.gallery.art.server.db.entity.PostEntity;
 import com.gallery.art.server.db.entity.UserEntity;
+import com.gallery.art.server.db.entity.collection.PostInCollectionEntity;
+import com.gallery.art.server.db.entity.collection.PostInCollectionId;
 import com.gallery.art.server.db.entity.saved.SavedCollectionEntity;
 import com.gallery.art.server.db.entity.saved.SavedCollectionId;
 import com.gallery.art.server.dto.common.StatusesById;
@@ -12,6 +15,7 @@ import com.gallery.art.server.exeption.ObjectNotExistsException;
 import com.gallery.art.server.filters.post.PostFilter;
 import com.gallery.art.server.mapper.PostCollectionMapper;
 import com.gallery.art.server.repository.PostCollectionRepository;
+import com.gallery.art.server.repository.PostInCollectionRepository;
 import com.gallery.art.server.repository.saved.SavedPostCollectionRepository;
 import com.gallery.art.server.service.IAuthService;
 import com.gallery.art.server.service.IPostCollectionService;
@@ -26,7 +30,6 @@ import javax.transaction.Transactional;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gallery.art.server.utils.PostSpecificationUtils.postCollectionEntitySpecificationForFilter;
 
@@ -37,6 +40,7 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
 
     private final PostCollectionRepository postCollectionRepository;
     private final SavedPostCollectionRepository savedCollectionRepository;
+    private final PostInCollectionRepository postInCollectionRepository;
 
     private final IPostService postService;
     private final IAuthService authService;
@@ -60,19 +64,17 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
     @Override
     public PostCollection createPostCollection(EditPostCollection editPostCollection) {
         PostCollectionEntity postCollectionEntity = postCollectionMapper.asEntity(editPostCollection, authService.getLoggedUserEntity());
-        postCollectionEntity.setPosts(editPostCollection.getPosts().stream().map(p -> postService.findPostEntityById(p.getId())).collect(Collectors.toSet()));
         return postCollectionMapper.toDto(postCollectionRepository.save(postCollectionEntity));
     }
 
     @Override
-    public PostCollection updatePost(Long postCollectionId, EditPostCollection editPostCollection) {
+    public PostCollection updatePostCollection(Long postCollectionId, EditPostCollection editPostCollection) {
         PostCollectionEntity postCollectionEntity = findPostCollectionEntityById(postCollectionId);
         postCollectionMapper.asEntity(postCollectionEntity, editPostCollection);
 
         if (!authService.getLoggedUserEntity().getId().equals(postCollectionEntity.getOwner().getId())) {
             throw new IllegalArgumentException("пользователь не совпадвет");
         }
-        postCollectionEntity.setPosts(editPostCollection.getPosts().stream().map(p -> postService.findPostEntityById(p.getId())).collect(Collectors.toSet()));
 
         return postCollectionMapper.toDto(postCollectionRepository.save(postCollectionEntity));
     }
@@ -134,5 +136,24 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
     @Override
     public boolean savedByUser(Long collectionId, Long userId) {
         return savedCollectionRepository.existsById(new SavedCollectionId(userId, collectionId));
+    }
+
+    @Override
+    public Boolean savePostToCollection(Long collectionId, Long postId) {
+        UserEntity user = authService.getLoggedUserEntity();
+        PostEntity post = postService.findPostEntityById(postId);
+        PostCollectionEntity collectionEntity = findPostCollectionEntityById(collectionId);
+
+        if (!user.getId().equals(collectionEntity.getOwner().getId())) {
+            throw new IllegalArgumentException("Пользователь должен быть владельцем коллекции");
+        }
+
+        if (postInCollectionRepository.existsById(new PostInCollectionId(postId, collectionId))) {
+            postInCollectionRepository.deleteById(new PostInCollectionId(postId, collectionId));
+            return false;
+        } else {
+            postInCollectionRepository.save(new PostInCollectionEntity(post, collectionEntity));
+            return true;
+        }
     }
 }

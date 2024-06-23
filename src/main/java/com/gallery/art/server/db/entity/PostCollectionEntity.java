@@ -1,5 +1,6 @@
 package com.gallery.art.server.db.entity;
 
+import com.gallery.art.server.db.entity.collection.PostInCollectionEntity;
 import com.gallery.art.server.db.entity.saved.SavedCollectionEntity;
 import com.gallery.art.server.db.listener.PostCollectionEntityListener;
 import lombok.Getter;
@@ -26,12 +27,8 @@ public class PostCollectionEntity extends BaseEntity {
     @Column
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "post_post_collection",
-            joinColumns = @JoinColumn(name = "post_collection_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private Set<PostEntity> posts = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "collection")
+    private Set<PostInCollectionEntity> posts = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -48,7 +45,7 @@ public class PostCollectionEntity extends BaseEntity {
     private boolean hide = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "postCollection")
-    private Set<SavedCollectionEntity> savedByUser;
+    private Set<SavedCollectionEntity> savedByUser = new HashSet<>();
 
     @Transient
     private boolean saved;

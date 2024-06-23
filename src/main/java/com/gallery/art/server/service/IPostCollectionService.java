@@ -16,7 +16,7 @@ public interface IPostCollectionService {
 
     PostCollection createPostCollection(EditPostCollection editPostCollection);
 
-    PostCollection updatePost(Long postCollectionId, EditPostCollection editPostCollection);
+    PostCollection updatePostCollection(Long postCollectionId, EditPostCollection editPostCollection);
 
     Page<PostCollection> findAllPostCollection(PostFilter filter);
 
@@ -25,4 +25,6 @@ public interface IPostCollectionService {
     Boolean addToSaved(Long collectionId);
 
     boolean savedByUser(Long collectionId, Long userId);
+
+    Boolean savePostToCollection(Long collectionId, Long postId);
 }

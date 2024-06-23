@@ -27,7 +27,5 @@ public interface IPostService {
 
     Boolean addToSaved(Long postId);
 
-    Boolean addToCollections(Long postId, Long collectionId);
-
     boolean savedByUser(Long postId, Long userId);
 }

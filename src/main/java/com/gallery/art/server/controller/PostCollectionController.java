@@ -44,7 +44,7 @@ public class PostCollectionController {
     @Operation(summary = "Обновление коллекции постов")
     @PutMapping("{id}")
     public PostCollection updatePostCollection(@Positive @PathVariable("id") Long postId, @Valid @RequestBody EditPostCollection postCollection){
-        return postCollectionService.updatePost(postId, postCollection);
+        return postCollectionService.updatePostCollection(postId, postCollection);
     }
 
     @Operation(summary = "Удаление коллекции постов")
@@ -57,6 +57,12 @@ public class PostCollectionController {
     @PutMapping("action/add-to-saved/{id}")
     public boolean addToSaved(@Positive @PathVariable("id") Long postId){
         return postCollectionService.addToSaved(postId);
+    }
+
+    @Operation(summary = "Добавление поста в коллекцию") //todo
+    @PutMapping("action/save-to-collection/{collection}/post/{post}")
+    public boolean savePostToCollection(@Positive @PathVariable("collection") Long collectionId, @Positive @PathVariable("post") Long postId){
+        return postCollectionService.savePostToCollection(collectionId, postId);
     }
 
 }
