@@ -45,9 +45,9 @@ public class PostSpecificationUtils {
 
         if (filterPostRequest.userId() != null) {
             if (isSaved) {
-                specifications.add(getContainsOwnerCollectionSpecification(filterPostRequest.userId()));
-            } else {
                 specifications.add(getContainsSavedCollectionSpecification(filterPostRequest.userId()));
+            } else {
+                specifications.add(getContainsOwnerCollectionSpecification(filterPostRequest.userId()));
             }
         }
 
