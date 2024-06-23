@@ -59,10 +59,16 @@ public class PostCollectionController {
         return postCollectionService.addToSaved(postId);
     }
 
-    @Operation(summary = "Добавление поста в коллекцию") //todo
-    @PutMapping("action/save-to-collection/{collection}/post/{post}")
-    public boolean savePostToCollection(@Positive @PathVariable("collection") Long collectionId, @Positive @PathVariable("post") Long postId){
-        return postCollectionService.savePostToCollection(collectionId, postId);
+    @Operation(summary = "Добавление поста в коллекцию")
+    @PostMapping("action/save-to-collection/{collection}/post/{post}")
+    public void savePostToCollection(@Positive @PathVariable("collection") Long collectionId, @Positive @PathVariable("post") Long postId){
+        postCollectionService.savePostToCollection(collectionId, postId, false);
+    }
+
+    @Operation(summary = "Удаление поста из коллекции")
+    @DeleteMapping("action/delete-to-collection/{collection}/post/{post}")
+    public void deletePostToCollection(@Positive @PathVariable("collection") Long collectionId, @Positive @PathVariable("post") Long postId){
+        postCollectionService.savePostToCollection(collectionId, postId, true);
     }
 
 }

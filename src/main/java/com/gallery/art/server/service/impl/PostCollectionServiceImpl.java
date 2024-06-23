@@ -139,7 +139,7 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
     }
 
     @Override
-    public Boolean savePostToCollection(Long collectionId, Long postId) {
+    public void savePostToCollection(Long collectionId, Long postId, boolean delete) {
         UserEntity user = authService.getLoggedUserEntity();
         PostEntity post = postService.findPostEntityById(postId);
         PostCollectionEntity collectionEntity = findPostCollectionEntityById(collectionId);
@@ -148,12 +148,12 @@ public class PostCollectionServiceImpl implements IPostCollectionService {
             throw new IllegalArgumentException("Пользователь должен быть владельцем коллекции");
         }
 
-        if (postInCollectionRepository.existsById(new PostInCollectionId(postId, collectionId))) {
-            postInCollectionRepository.deleteById(new PostInCollectionId(postId, collectionId));
-            return false;
+        if (delete) {
+            if (postInCollectionRepository.existsById(new PostInCollectionId(postId, collectionId))) {
+                postInCollectionRepository.deleteById(new PostInCollectionId(postId, collectionId));
+            }
         } else {
             postInCollectionRepository.save(new PostInCollectionEntity(post, collectionEntity));
-            return true;
         }
     }
 }

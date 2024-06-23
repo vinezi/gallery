@@ -26,5 +26,5 @@ public interface IPostCollectionService {
 
     boolean savedByUser(Long collectionId, Long userId);
 
-    Boolean savePostToCollection(Long collectionId, Long postId);
+    void savePostToCollection(Long collectionId, Long postId, boolean delete);
 }
